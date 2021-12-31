@@ -1,6 +1,6 @@
 import k from "../kaboom";
 
-const { add, origin, sprite, solid, body, area, isKeyDown, text, destroyAll } = k
+const { add, origin, sprite, solid, body, area, isKeyDown, text, destroyAll, get } = k
 
 export function MainScene(config) {
 
@@ -9,14 +9,15 @@ export function MainScene(config) {
     }
 
     const faune = add([pos(100, 100),
-        sprite("faune"),
+        sprite("zombie"),
         origin('center'),
         solid(),
         body({maxVel: 0}),
+        // scale(2),
         area()]);
     faune.play("idle-up")
 
-    const name = add([text("Lunat1k", {size: 8}), pos(faune.pos)])
+    const name = add([text(config.userName, {size: 8}), pos(faune.pos)])
     faune.onUpdate(() => {
         camPos(faune.pos)
         name.pos.x = faune.pos.x - name.width / 2
@@ -29,23 +30,23 @@ export function MainScene(config) {
         const up = isKeyDown('up')
         const down = isKeyDown('down')
         const space = isKeyDown('space')
-        const speed = 10
+        const speed = 6
         const currentAnim = faune.curAnim()
 
-        let infos = k.get('info')
-        let colliding = false
-        for (let info of infos) {
-            if (faune.isColliding(info)) {
-                colliding = true
-                if (space) {
-                    add([text(info.message, {size: 16, width: 200}), pos(info.pos.x - 100, info.pos.y - 50), 'printed-text'])
-                }
-            }
-        }
-
-        if (!colliding) {
-            destroyAll('printed-text')
-        }
+        // let infos = k.get('info')
+        // let colliding = false
+        // for (let info of infos) {
+        //     if (faune.isColliding(info)) {
+        //         colliding = true
+        //         if (space) {
+        //             add([text(info.message, {size: 16, width: 200}), pos(info.pos.x - 100, info.pos.y - 50), 'printed-text'])
+        //         }
+        //     }
+        // }
+        //
+        // if (!colliding) {
+        //     destroyAll('printed-text')
+        // }
 
         if (left) {
             if (currentAnim !== "walk-side") {
