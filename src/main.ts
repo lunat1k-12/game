@@ -5,7 +5,8 @@ import MainScene from "./scene/mainScene";
 const {
     scene,
     go,
-    loadSpriteAtlas
+    loadSpriteAtlas,
+    loadSprite
 } = k
 
 loadSpriteAtlas("/public/assets/faune_walk.png", {
@@ -61,6 +62,11 @@ loadSpriteAtlas("/public/assets/zombie.png", {
         },
     },
 })
+
+loadSprite("bg","/public/assets/floor_1.png")
+loadSprite("faune_ico","/public/assets/faune_ico.png")
+loadSprite("knight_ico","/public/assets/knight_ico.png")
+loadSprite("zombie_ico","/public/assets/zombie_ico.png")
 
 scene("start", StartScene)
 scene("main", MainScene)

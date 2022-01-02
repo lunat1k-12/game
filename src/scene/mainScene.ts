@@ -4,12 +4,21 @@ const { add, origin, sprite, solid, body, area, isKeyDown, text, destroyAll, get
 
 export function MainScene(config) {
 
+    layers(["bg", "level"], "level")
+
     for (let level of config.levels) {
         k.addLevel(level, { width: 16, height: 16, ...config.key })
     }
 
+    add([sprite("bg", {
+        tiled: true,
+        height: 640,
+        width: 624
+    }),
+    layer("bg")])
+
     const faune = add([pos(100, 100),
-        sprite("zombie"),
+        sprite(config.character),
         origin('center'),
         solid(),
         body({maxVel: 0}),
@@ -25,28 +34,18 @@ export function MainScene(config) {
     })
 
     faune.action(() => {
+        const quite = isKeyDown('q')
         const left = isKeyDown('left')
         const right = isKeyDown('right')
         const up = isKeyDown('up')
         const down = isKeyDown('down')
-        const space = isKeyDown('space')
         const speed = 6
         const currentAnim = faune.curAnim()
 
-        // let infos = k.get('info')
-        // let colliding = false
-        // for (let info of infos) {
-        //     if (faune.isColliding(info)) {
-        //         colliding = true
-        //         if (space) {
-        //             add([text(info.message, {size: 16, width: 200}), pos(info.pos.x - 100, info.pos.y - 50), 'printed-text'])
-        //         }
-        //     }
-        // }
-        //
-        // if (!colliding) {
-        //     destroyAll('printed-text')
-        // }
+        if (quite) {
+            go("start")
+            return
+        }
 
         if (left) {
             if (currentAnim !== "walk-side") {
