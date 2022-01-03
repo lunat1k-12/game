@@ -4,7 +4,7 @@ import tiledKaboom from './tiled-kaboom'
 export const k = kaboom({
     background: [0, 0, 0, 1],
     debug: true,
-    scale: 2.5,
+    scale: 3,
     plugins: [tiledKaboom]
 })
 

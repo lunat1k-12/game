@@ -1,6 +1,6 @@
 import k from "../kaboom";
 import {GameObj, KaboomCtx} from "kaboom";
-import map from "../WoodTiles";
+import map from "../DungeonLevelOneTiles";
 import run from "../rsocket/RsocketCLient"
 
 const {

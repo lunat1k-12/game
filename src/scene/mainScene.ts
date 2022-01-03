@@ -1,25 +1,17 @@
 import k from "../kaboom";
 import {postPlayerInfo, playersInfo, clearData} from "../rsocket/RsocketCLient";
 
-const { add, origin, sprite, solid, body, area, isKeyDown, text, destroyAll, get } = k
+const { add, origin, sprite, solid, body, area, isKeyDown, text, get } = k
 let userName = undefined
 
 export function MainScene(config) {
 
     userName = config.userName
     playersUpdate()
-    layers(["bg", "level"], "level")
 
     for (let level of config.levels) {
         k.addLevel(level, { width: 16, height: 16, ...config.key })
     }
-
-    add([sprite("bg", {
-        tiled: true,
-        height: 640,
-        width: 624
-    }),
-    layer("bg")])
 
     const faune = add([pos(100, 100),
         sprite(config.character),
@@ -35,6 +27,15 @@ export function MainScene(config) {
         camPos(faune.pos)
         name.pos.x = faune.pos.x - name.width / 2
         name.pos.y = faune.pos.y - name.height - 10
+        every('level-part', (part) => {
+
+            if (Math.abs(faune.pos.x - part.pos.x) > k.width() / 2 ||
+                Math.abs(faune.pos.y - part.pos.y) > k.height() / 2) {
+                part.hidden = true
+            } else {
+                part.hidden = false
+            }
+        })
     })
 
     faune.action(() => {

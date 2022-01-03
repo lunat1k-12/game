@@ -2,7 +2,7 @@ import { RSocketClient, JsonSerializer, IdentitySerializer } from 'rsocket-core'
 import RSocketWebSocketClient from 'rsocket-websocket-client';
 
 // backend ws endpoint
-const wsURL = 'ws://192.168.0.103:7000/rsocket';
+const wsURL = 'ws://localhost:7000/rsocket';
 export let rsocket = undefined;
 
 // rsocket client
