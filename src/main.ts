@@ -6,16 +6,16 @@ const {
     scene,
     go,
     loadSpriteAtlas,
-    loadTiledMap
+    loadSprite
 } = k
 
 loadSpriteAtlas("/public/assets/faune_walk.png", {
     'faune': {
         x: 0,
         y: 0,
-        width: 748,
+        width: 768,
         height: 32,
-        sliceX: 23.2,
+        sliceX: 24,
         anims: {
             'walk-down': {from: 0, to: 7, loop: true, speed: 15},
             'walk-side': {from: 8, to: 15, loop: true, speed: 15},
@@ -27,13 +27,46 @@ loadSpriteAtlas("/public/assets/faune_walk.png", {
     },
 })
 
-// loadAseprite("wood", "/public/tiles/tiles.png", "/wood.json")
-//     .then((r) => {
-//         console.log(r)
-//     })
+loadSpriteAtlas("/public/assets/knight.png", {
+    'knight': {
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 140,
+        sliceY: 5,
+        anims: {
+            'walk-down': {from: 0, to: 4, loop: true, speed: 15},
+            'walk-side': {from: 0, to: 4, loop: true, speed: 15},
+            'walk-up': {from: 0, to: 4, loop: true, speed: 15},
+            'idle-down': {from: 1, to: 1},
+            'idle-side': {from: 0, to: 0},
+            'idle-up': {from: 0, to: 0},
+        },
+    },
+})
 
-// loadTiledMap("/public/tiles/wood.json", "/public/tiles/tiles.png")
+loadSpriteAtlas("/public/assets/zombie.png", {
+    'zombie': {
+        x: 0,
+        y: 0,
+        width: 32,
+        height: 272,
+        sliceY: 8,
+        anims: {
+            'walk-down': {from: 0, to: 7, loop: true, speed: 15},
+            'walk-side': {from: 0, to: 7, loop: true, speed: 15},
+            'walk-up': {from: 0, to: 7, loop: true, speed: 15},
+            'idle-down': {from: 1, to: 1},
+            'idle-side': {from: 0, to: 0},
+            'idle-up': {from: 0, to: 0},
+        },
+    },
+})
 
+loadSprite("bg","/public/assets/floor_1.png")
+loadSprite("faune_ico","/public/assets/faune_ico.png")
+loadSprite("knight_ico","/public/assets/knight_ico.png")
+loadSprite("zombie_ico","/public/assets/zombie_ico.png")
 
 scene("start", StartScene)
 scene("main", MainScene)

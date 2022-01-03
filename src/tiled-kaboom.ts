@@ -243,14 +243,14 @@ export default (k) => {
           }
           if (collide) {
             if (info) {
-              map.key[mapsymbols[frame]] = () => [k.sprite(tileset.name, { frame: frame - 1 }), k.area(), k.solid(), 'wall', 'info', {message}]
+              map.key[mapsymbols[frame]] = () => [k.sprite(tileset.name, { frame: frame - 1 }), k.area(), k.solid(), 'wall', 'info', 'level-part', {message}]
             } else {
-              map.key[mapsymbols[frame]] = () => [k.sprite(tileset.name, { frame: frame - 1 }), k.area(), k.solid(), 'wall']
+              map.key[mapsymbols[frame]] = () => [k.sprite(tileset.name, { frame: frame - 1 }), k.area(), k.solid(), 'wall', 'level-part']
             }
           } else if (info) {
-            map.key[mapsymbols[frame]] = () => [k.sprite(tileset.name, { frame: frame - 1 }), k.area(), 'info', {message}]
+            map.key[mapsymbols[frame]] = () => [k.sprite(tileset.name, { frame: frame - 1 }), k.area(), 'info', 'level-part', {message}]
           } else {
-            map.key[mapsymbols[frame]] = () => [k.sprite(tileset.name, { frame: frame - 1 })]
+            map.key[mapsymbols[frame]] = () => [k.sprite(tileset.name, { frame: frame - 1 }), 'level-part']
           }
         }
       }
