@@ -11,7 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "kaboom": "^2000.1.8"
+    "kaboom": "^2000.1.8",
+    "rsocket-core": "^0.0.27",
+    "rsocket-tcp-client": "^0.0.27",
+    "rsocket-websocket-client": "^0.0.27"
   },
   "devDependencies": {
     "typescript": "^4.5.4"

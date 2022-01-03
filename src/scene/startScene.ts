@@ -1,6 +1,7 @@
 import k from "../kaboom";
 import {GameObj, KaboomCtx} from "kaboom";
 import map from "../WoodTiles";
+import run from "../rsocket/RsocketCLient"
 
 const {
     go,
@@ -26,6 +27,7 @@ function createLabel(k: KaboomCtx, message: string, width: number, height: numbe
 }
 
 export function StartScene() {
+    run()
     userName = ""
     const label = createLabel(k, "Enter name", k.width() * 0.5, k.height() * 0.2)
 
