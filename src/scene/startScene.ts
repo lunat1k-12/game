@@ -10,7 +10,8 @@ const {
     loadTiledMap,
     onCharInput,
     drawLines,
-    onClick
+    onClick,
+    onKeyPress
 } = k
 
 let levels = undefined
@@ -38,6 +39,15 @@ export function StartScene() {
         userName += ch
         label.text = userName
     })
+
+    onKeyPress('backspace', () => {
+        userName = userName.substring(0, userName.length - 1)
+        label.text = userName
+        if (userName.length === 0) {
+            label.text = "Enter name"
+        }
+    })
+
 
     loadTiledMap(map).then((r) => {
         levels = r.levels

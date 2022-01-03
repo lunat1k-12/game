@@ -43,7 +43,7 @@ const numberRequester = (socket) => {
     })
 }
 
-export const playersInfo = (onResponse) => {
+export const playersInfo = (onResponse, requestSize) => {
     rsocket.requestStream({
         data: undefined,
         metadata: String.fromCharCode('players-movement'.length) + 'players-movement'
@@ -51,7 +51,7 @@ export const playersInfo = (onResponse) => {
         onError: errorHanlder,
         onNext: onResponse,
         onSubscribe: subscription => {
-            subscription.request(2147483647); // set it to some max value
+            subscription.request(requestSize); // set it to some max value
         }
     })
 }
