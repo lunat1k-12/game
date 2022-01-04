@@ -18,7 +18,7 @@ export function MainScene(config) {
         k.addLevel(level, { width: 16, height: 16, ...config.key })
     }
 
-    const faune = add([pos(100, 100),
+    const faune = add([pos(202, 325),
         sprite(config.character),
         origin('center'),
         solid(),
