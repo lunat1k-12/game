@@ -56,6 +56,78 @@ export function loadHeros() {
             },
         },
     })
+
+    loadSpriteAtlas("/public/assets/ogre.png", {
+        'ogre': {
+            x: 0,
+            y: 0,
+            width: 256,
+            height: 32,
+            sliceX: 8,
+            anims: {
+                'walk-down': {from: 0, to: 7, loop: true, speed: 15},
+                'walk-side': {from: 0, to: 7, loop: true, speed: 15},
+                'walk-up': {from: 0, to: 7, loop: true, speed: 15},
+                'idle-down': {from: 1, to: 1},
+                'idle-side': {from: 0, to: 0},
+                'idle-up': {from: 0, to: 0},
+            },
+        },
+    })
+
+    loadSpriteAtlas("/public/assets/necro.png", {
+        'necro': {
+            x: 0,
+            y: 0,
+            width: 16,
+            height: 160,
+            sliceY: 8,
+            anims: {
+                'walk-down': {from: 0, to: 7, loop: true, speed: 15},
+                'walk-side': {from: 0, to: 7, loop: true, speed: 15},
+                'walk-up': {from: 0, to: 7, loop: true, speed: 15},
+                'idle-down': {from: 1, to: 1},
+                'idle-side': {from: 0, to: 0},
+                'idle-up': {from: 0, to: 0},
+            },
+        },
+    })
+
+    loadSpriteAtlas("/public/assets/chort.png", {
+        'chort': {
+            x: 0,
+            y: 0,
+            width: 16,
+            height: 192,
+            sliceY: 8,
+            anims: {
+                'walk-down': {from: 0, to: 7, loop: true, speed: 15},
+                'walk-side': {from: 0, to: 7, loop: true, speed: 15},
+                'walk-up': {from: 0, to: 7, loop: true, speed: 15},
+                'idle-down': {from: 1, to: 1},
+                'idle-side': {from: 0, to: 0},
+                'idle-up': {from: 0, to: 0},
+            },
+        },
+    })
+
+    loadSpriteAtlas("/public/assets/wizzard.png", {
+        'wizzard': {
+            x: 0,
+            y: 0,
+            width: 16,
+            height: 224,
+            sliceY: 8,
+            anims: {
+                'walk-down': {from: 3, to: 7, loop: true, speed: 15},
+                'walk-side': {from: 3, to: 7, loop: true, speed: 15},
+                'walk-up': {from: 3, to: 7, loop: true, speed: 15},
+                'idle-down': {from: 0, to: 3, loop: true, speed: 10},
+                'idle-side': {from: 0, to: 3, loop: true, speed: 10},
+                'idle-up': {from: 0, to: 3, loop: true, speed: 10},
+            },
+        },
+    })
 }
 
 export default loadHeros

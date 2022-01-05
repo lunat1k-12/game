@@ -7,6 +7,10 @@ export function loadSprites() {
     loadSprite("faune_ico","/public/assets/faune_ico.png")
     loadSprite("knight_ico","/public/assets/knight_ico.png")
     loadSprite("zombie_ico","/public/assets/zombie_ico.png")
+    loadSprite("ogre_ico","/public/assets/ogre_ico.png")
+    loadSprite("necro_ico","/public/assets/necro_ico.png")
+    loadSprite("chort_ico","/public/assets/chort_ico.png")
+    loadSprite("wizzard_ico","/public/assets/wizzard_ico.png")
     loadSprite("slide1","/public/slides/slide1.png")
     loadSprite("slide2","/public/slides/slide2.png")
     loadSprite("slide3","/public/slides/slide3.png")
@@ -23,6 +27,7 @@ export function loadSprites() {
     loadSprite("slide14","/public/slides/slide14.png")
     loadSprite("slide15","/public/slides/slide15.png")
     loadSprite("question_mark","/public/assets/question_mark.png")
+    loadSprite("dungeon_logo","/public/assets/dungeon_logo.png")
 }
 
 export default loadSprites

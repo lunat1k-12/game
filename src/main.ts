@@ -1,6 +1,7 @@
 import k from "./kaboom";
 import StartScene from "./scene/startScene";
 import MainScene from "./scene/mainScene";
+import LogoScene from "./scene/logoScene";
 import loadSprites from "./loader/SpriteLoader";
 import loadHeros from "./loader/HeroLoader";
 
@@ -11,5 +12,6 @@ loadHeros()
 
 scene("start", StartScene)
 scene("main", MainScene)
+scene("logo", LogoScene)
 
-go('start')
+go('logo')

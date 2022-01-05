@@ -1,7 +1,7 @@
 import k from "../kaboom";
 import {GameObj, KaboomCtx} from "kaboom";
 import map from "../LiquebaseDungeon";
-import run from "../rsocket/RsocketCLient"
+import connect from "../rsocket/RsocketCLient"
 
 const {
     go,
@@ -28,7 +28,7 @@ function createLabel(k: KaboomCtx, message: string, width: number, height: numbe
 }
 
 export function StartScene() {
-    run()
+    connect()
     userName = ""
     const label = createLabel(k, "Enter name", k.width() * 0.5, k.height() * 0.2)
 
@@ -55,9 +55,13 @@ export function StartScene() {
     })
 
     layers(["icons", "lines"], "icons")
-    add([sprite("faune_ico"), pos(k.width() * 0.3, k.height() * 0.5 ), area(), "hero", {heroName: "faune"}])
-    add([sprite("zombie_ico"), pos(k.width() * 0.5, k.height() * 0.5 ), area(), "hero", {heroName: "zombie"}])
-    add([sprite("knight_ico"), pos(k.width() * 0.7, k.height() * 0.5 ), area(), "hero", {heroName: "knight"}])
+    add([sprite("faune_ico"), pos(k.width() * 0.2, k.height() * 0.5 ), area(), "hero", {heroName: "faune"}])
+    add([sprite("zombie_ico"), pos(k.width() * 0.2 + 64, k.height() * 0.5 ), area(), "hero", {heroName: "zombie"}])
+    add([sprite("knight_ico"), pos(k.width() * 0.2 + 128, k.height() * 0.5 ), area(), "hero", {heroName: "knight"}])
+    add([sprite("ogre_ico"), pos(k.width() * 0.2 + 175, k.height() * 0.5 ), area(), "hero", {heroName: "ogre"}])
+    add([sprite("necro_ico"), pos(k.width() * 0.2 + 235, k.height() * 0.5 ), area(), "hero", {heroName: "necro"}])
+    add([sprite("chort_ico"), pos(k.width() * 0.2 + 265, k.height() * 0.5 ), area(), "hero", {heroName: "chort"}])
+    add([sprite("wizzard_ico"), pos(k.width() * 0.2 + 300, k.height() * 0.5 ), area(), "hero", {heroName: "wizzard"}])
 
     k.onUpdate("hero", (h) => {
         let color = rgb(255, 0, 0)

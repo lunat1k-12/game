@@ -46,6 +46,10 @@ export function spawnPlayer(config): GameObj {
         }
     })
 
+    k.onKeyPress('l', () => {
+        console.log('idle')
+        faune.play('idle-down')
+    })
     faune.action(() => {
         const clear = isKeyDown('c')
         const left = isKeyDown('left')
@@ -90,7 +94,10 @@ export function spawnPlayer(config): GameObj {
             playerUpdate(config, faune, "walk-down")
         } else if (currentAnim !== undefined){
             const direction = currentAnim.split('-').pop() ?? 'down'
-            faune.play(`idle-${direction}`)
+            const newAnim = `idle-${direction}`
+            if (currentAnim !== newAnim) {
+                faune.play(`idle-${direction}`)
+            }
             playerUpdate(config, faune, `idle-${direction}`)
         }
     })
