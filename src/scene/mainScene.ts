@@ -1,13 +1,14 @@
 import k from "../kaboom";
-import {postPlayerInfo, playersInfo, clearData} from "../rsocket/RsocketCLient";
+import {playersInfo} from "../rsocket/RsocketCLient";
 import slideMap from "./mapping/SlidesMapping";
+import spawnPlayer from "./objects/MainPlayer";
+import drawLabels from "./objects/Labels";
 
-const { add, origin, sprite, solid, body, area, isKeyDown, text, get } = k
+const {add, origin, sprite, area, text, get} = k
 let userName = undefined
 const REQUEST_SIZE = 50
 let counter = 0
-let question = false
-let flipX = false
+let privData = []
 
 export function MainScene(config) {
 
@@ -16,47 +17,11 @@ export function MainScene(config) {
 
     layers(['level', 'pop-up', 'message'], 'level')
     for (let level of config.levels) {
-        k.addLevel(level, { width: 16, height: 16, ...config.key })
+        k.addLevel(level, {width: 16, height: 16, ...config.key})
     }
 
-    const faune = add([pos(202, 325),
-        sprite(config.character),
-        origin('center'),
-        solid(),
-        body({maxVel: 0}),
-        // scale(2),
-        area()]);
-    faune.play("idle-up")
-
-    const name = add([text(config.userName, {size: 8}), pos(faune.pos)])
-    faune.onUpdate(() => {
-        camPos(faune.pos)
-        name.pos.x = faune.pos.x - name.width / 2
-        name.pos.y = faune.pos.y - name.height - 10
-        every('question-player', (question) => {
-            question.pos.x = faune.pos.x - question.width / 2
-            question.pos.y = faune.pos.y - question.height - 20
-        })
-        every('level-part', (part) => {
-            if (Math.abs((faune.pos.x - 8) - part.pos.x) > k.width() / 2 + 8 ||
-                Math.abs((faune.pos.y - 8) - part.pos.y) > k.height() / 2 + 8) {
-                part.hidden = true
-            } else {
-                part.hidden = false
-            }
-        })
-
-    })
-    k.onKeyPress('q', () => {
-        if (get('question-player').length > 0) {
-            destroyAll('question-player')
-            question = false
-        } else {
-            add([sprite('question_mark'), area(),
-                pos(0, 0), 'question-player'])
-            question = true
-        }
-    })
+    const faune = spawnPlayer(config)
+    drawLabels()
 
     k.onKeyPress('space', () => {
         if (get('pop-up').length > 0) {
@@ -80,75 +45,15 @@ export function MainScene(config) {
             }
         })
     })
-
-    faune.action(() => {
-        const clear = isKeyDown('c')
-        const left = isKeyDown('left')
-        const right = isKeyDown('right')
-        const up = isKeyDown('up')
-        const down = isKeyDown('down')
-        const speed = 6
-        const currentAnim = faune.curAnim()
-
-        if (clear) {
-            clearData()
-            return
-        }
-
-        if (left) {
-            if (currentAnim !== "walk-side") {
-                faune.play("walk-side")
-            }
-            flipX = true
-            faune.flipX(true)
-            faune.pos.x -= speed
-            playerUpdate(config, faune, "walk-side")
-        } else if (right) {
-            if (currentAnim !== "walk-side") {
-                faune.play("walk-side")
-            }
-            flipX = false
-            faune.flipX(false)
-            faune.pos.x += speed
-            playerUpdate(config, faune, "walk-side")
-        } else if (up) {
-            if (currentAnim !== "walk-up") {
-                faune.play("walk-up")
-            }
-            faune.pos.y -= speed
-            playerUpdate(config, faune, "walk-up")
-        } else if (down) {
-            if (currentAnim !== "walk-down") {
-                faune.play("walk-down")
-            }
-            faune.pos.y += speed
-            playerUpdate(config, faune, "walk-down")
-        } else if (currentAnim !== undefined){
-            const direction = currentAnim.split('-').pop() ?? 'down'
-            faune.play(`idle-${direction}`)
-            playerUpdate(config, faune, `idle-${direction}`)
-        }
-    })
 }
 
-function playerUpdate(config, player, currentAnim) {
-    postPlayerInfo({
-        playerName: config.userName,
-        x: player.pos.x,
-        y: player.pos.y,
-        animation: currentAnim,
-        sprite: config.character,
-        flipX,
-        question
-    })
-}
 
 function playersUpdate() {
     playersInfo(onLevelUpdate, REQUEST_SIZE)
 }
 
 function onLevelUpdate(payload) {
-    for (let pl of payload.data) {
+    for (let pl of processPlData(payload.data)) {
         if (userName !== pl.playerName) {
             if (get(`hero-${pl.playerName}`).length > 0) {
                 const hero = get(`hero-${pl.playerName}`)[0]
@@ -160,7 +65,6 @@ function onLevelUpdate(payload) {
                 }
 
                 if (pl.question) {
-
                     if (get(`question-${pl.playerName}`).length === 0) {
                         add([sprite('question_mark'), area(),
                             pos(0, 0), `question-${pl.playerName}`])
@@ -172,7 +76,7 @@ function onLevelUpdate(payload) {
                 hero.flipX(pl.flipX)
             } else {
                 const player = add([sprite(pl.sprite), pos(pl.x, pl.y), origin('center'), area(), `hero-${pl.playerName}`, 'level-part'])
-                const name = add([text(pl.playerName, {size: 8}), pos(player.pos), 'level-part'])
+                const name = add([text(pl.playerName, {size: 8}), pos(player.pos), 'level-part', `name-${pl.playerName}`])
                 if (pl.question) {
                     add([sprite('question_mark'), area(),
                         pos(0, 0), `question-${pl.playerName}`])
@@ -198,6 +102,59 @@ function onLevelUpdate(payload) {
         counter = 0
         playersUpdate()
     }
+}
+
+function processPlData(data) {
+    const finalData = []
+    const toRemove = []
+    for (let pl of data) {
+        let existingPl = null
+        for (let privPl of privData) {
+            if (privPl.playerName === pl.playerName) {
+                existingPl = privPl
+            }
+        }
+
+        if (existingPl !== null && !isEqual(existingPl, pl)) {
+            finalData.push(pl)
+        }
+
+        if (existingPl === null) {
+            finalData.push(pl)
+        }
+    }
+
+    for (let oldPl of privData) {
+        let exists = false
+        for (let newPl of data) {
+            if (oldPl.playerName === newPl.playerName) {
+                exists = true
+            }
+        }
+        if (!exists) {
+            toRemove.push(oldPl)
+        }
+    }
+
+    removePlayers(toRemove)
+    privData = data
+    return finalData
+}
+
+function removePlayers(toRemove) {
+   for (let pl of toRemove) {
+       destroyAll(`hero-${pl.playerName}`)
+       destroyAll(`question-${pl.playerName}`)
+       destroyAll(`name-${pl.playerName}`)
+   }
+}
+
+function isEqual(pl1, pl2) {
+    return pl1.flipX === pl2.flipX && pl1.playerName === pl2.playerName &&
+        pl1.x === pl2.x && pl1.y === pl2.y &&
+        pl1.animation === pl2.animation &&
+        pl1.sprite === pl2.sprite &&
+        pl1.flipX === pl2.flipX && pl1.question === pl2.question
 }
 
 export default MainScene
