@@ -1,5 +1,6 @@
 import k from "../kaboom";
 import {postPlayerInfo, playersInfo, clearData} from "../rsocket/RsocketCLient";
+import slideMap from "./mapping/SlidesMapping";
 
 const { add, origin, sprite, solid, body, area, isKeyDown, text, get } = k
 let userName = undefined
@@ -37,9 +38,8 @@ export function MainScene(config) {
             question.pos.y = faune.pos.y - question.height - 20
         })
         every('level-part', (part) => {
-
-            if (Math.abs(faune.pos.x - part.pos.x) > k.width() / 2 ||
-                Math.abs(faune.pos.y - part.pos.y) > k.height() / 2) {
+            if (Math.abs((faune.pos.x - 8) - part.pos.x) > k.width() / 2 + 8 ||
+                Math.abs((faune.pos.y - 8) - part.pos.y) > k.height() / 2 + 8) {
                 part.hidden = true
             } else {
                 part.hidden = false
@@ -48,7 +48,6 @@ export function MainScene(config) {
 
     })
     k.onKeyPress('q', () => {
-
         if (get('question-player').length > 0) {
             destroyAll('question-player')
             question = false
@@ -59,31 +58,41 @@ export function MainScene(config) {
         }
     })
 
+    k.onKeyPress('space', () => {
+        if (get('pop-up').length > 0) {
+            destroyAll('pop-up')
+            return
+        }
+
+        every('slide', (slide) => {
+            if (slide.isColliding(faune)) {
+                let slideId = "";
+                for (let conf of slideMap) {
+                    if (conf.pos.x === slide.pos.x &&
+                        conf.pos.y === slide.pos.y) {
+                        slideId = conf.slideId
+                    }
+                }
+                add([sprite(slideId), origin('center'),
+                    fixed(), layer('pop-up'),
+                    scale(0.4),
+                    pos(k.width() / 2, k.height() / 2), 'pop-up'])
+            }
+        })
+    })
+
     faune.action(() => {
         const clear = isKeyDown('c')
         const left = isKeyDown('left')
         const right = isKeyDown('right')
         const up = isKeyDown('up')
         const down = isKeyDown('down')
-        const space = isKeyDown('space')
-        const close = isKeyDown('x')
         const speed = 6
         const currentAnim = faune.curAnim()
 
         if (clear) {
             clearData()
             return
-        }
-
-        if(space) {
-            add([sprite("slide1"), origin('center'),
-                fixed(), layer('pop-up'),
-                scale(0.3),
-                pos(k.width() / 2, k.height() / 2), 'pop-up'])
-        }
-
-        if (close) {
-            destroyAll('pop-up')
         }
 
         if (left) {

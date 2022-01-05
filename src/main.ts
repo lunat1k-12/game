@@ -1,74 +1,13 @@
 import k from "./kaboom";
 import StartScene from "./scene/startScene";
 import MainScene from "./scene/mainScene";
+import loadSprites from "./loader/SpriteLoader";
+import loadHeros from "./loader/HeroLoader";
 
-const {
-    scene,
-    go,
-    loadSpriteAtlas,
-    loadSprite
-} = k
+const { scene, go } = k
 
-loadSpriteAtlas("/public/assets/faune_walk.png", {
-    'faune': {
-        x: 0,
-        y: 0,
-        width: 768,
-        height: 32,
-        sliceX: 24,
-        anims: {
-            'walk-down': {from: 0, to: 7, loop: true, speed: 15},
-            'walk-side': {from: 8, to: 15, loop: true, speed: 15},
-            'walk-up': {from: 16, to: 23, loop: true, speed: 15},
-            'idle-down': {from: 1, to: 1},
-            'idle-side': {from: 10, to: 10},
-            'idle-up': {from: 19, to: 19},
-        },
-    },
-})
-
-loadSpriteAtlas("/public/assets/knight.png", {
-    'knight': {
-        x: 0,
-        y: 0,
-        width: 16,
-        height: 140,
-        sliceY: 5,
-        anims: {
-            'walk-down': {from: 0, to: 4, loop: true, speed: 15},
-            'walk-side': {from: 0, to: 4, loop: true, speed: 15},
-            'walk-up': {from: 0, to: 4, loop: true, speed: 15},
-            'idle-down': {from: 1, to: 1},
-            'idle-side': {from: 0, to: 0},
-            'idle-up': {from: 0, to: 0},
-        },
-    },
-})
-
-loadSpriteAtlas("/public/assets/zombie.png", {
-    'zombie': {
-        x: 0,
-        y: 0,
-        width: 32,
-        height: 272,
-        sliceY: 8,
-        anims: {
-            'walk-down': {from: 0, to: 7, loop: true, speed: 15},
-            'walk-side': {from: 0, to: 7, loop: true, speed: 15},
-            'walk-up': {from: 0, to: 7, loop: true, speed: 15},
-            'idle-down': {from: 1, to: 1},
-            'idle-side': {from: 0, to: 0},
-            'idle-up': {from: 0, to: 0},
-        },
-    },
-})
-
-loadSprite("bg","/public/assets/floor_1.png")
-loadSprite("faune_ico","/public/assets/faune_ico.png")
-loadSprite("knight_ico","/public/assets/knight_ico.png")
-loadSprite("zombie_ico","/public/assets/zombie_ico.png")
-loadSprite("slide1","/public/assets/slide1.png")
-loadSprite("question_mark","/public/assets/question_mark.png")
+loadSprites()
+loadHeros()
 
 scene("start", StartScene)
 scene("main", MainScene)

@@ -228,6 +228,7 @@ export default (k) => {
           let collide = false;
           let info = false;
           let message = "";
+          let slide = false;
           for (let tile of tileset.tiles) {
             if (tile.id === frame - 1) {
               for (let prop of tile.properties) {
@@ -237,6 +238,9 @@ export default (k) => {
                 if (prop.name === 'info') {
                   info = true
                   message = prop.value
+                }
+                if (prop.name === 'slide') {
+                  slide = prop.value
                 }
               }
             }
@@ -249,6 +253,8 @@ export default (k) => {
             }
           } else if (info) {
             map.key[mapsymbols[frame]] = () => [k.sprite(tileset.name, { frame: frame - 1 }), k.area(), 'info', 'level-part', {message}]
+          } else if (slide) {
+            map.key[mapsymbols[frame]] = () => [k.sprite(tileset.name, { frame: frame - 1 }), k.area(), 'level-part', 'slide']
           } else {
             map.key[mapsymbols[frame]] = () => [k.sprite(tileset.name, { frame: frame - 1 }), 'level-part']
           }
