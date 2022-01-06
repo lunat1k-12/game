@@ -11,6 +11,8 @@ export function loadSprites() {
     loadSprite("necro_ico","/public/assets/necro_ico.png")
     loadSprite("chort_ico","/public/assets/chort_ico.png")
     loadSprite("wizzard_ico","/public/assets/wizzard_ico.png")
+    loadSprite("swampy_ico","/public/assets/swampy_ico.png")
+    loadSprite("wogol_ico","/public/assets/wogol_ico.png")
     loadSprite("slide1","/public/slides/slide1.png")
     loadSprite("slide2","/public/slides/slide2.png")
     loadSprite("slide3","/public/slides/slide3.png")
@@ -28,6 +30,8 @@ export function loadSprites() {
     loadSprite("slide15","/public/slides/slide15.png")
     loadSprite("question_mark","/public/assets/question_mark.png")
     loadSprite("dungeon_logo","/public/assets/dungeon_logo.png")
+    loadSprite("frame","/public/assets/frame.png")
+    loadSprite("frame_selected","/public/assets/frame_selected.png")
 }
 
 export default loadSprites

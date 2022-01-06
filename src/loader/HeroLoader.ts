@@ -128,6 +128,42 @@ export function loadHeros() {
             },
         },
     })
+
+    loadSpriteAtlas("/public/assets/swampy.png", {
+        'swampy': {
+            x: 0,
+            y: 0,
+            width: 128,
+            height: 16,
+            sliceX: 8,
+            anims: {
+                'walk-down': {from: 0, to: 7, loop: true, speed: 15},
+                'walk-side': {from: 0, to: 7, loop: true, speed: 15},
+                'walk-up': {from: 0, to: 7, loop: true, speed: 15},
+                'idle-down': {from: 1, to: 0},
+                'idle-side': {from: 1, to: 0},
+                'idle-up': {from: 1, to: 0},
+            },
+        },
+    })
+
+    loadSpriteAtlas("/public/assets/wogol.png", {
+        'wogol': {
+            x: 0,
+            y: 0,
+            width: 16,
+            height: 160,
+            sliceY: 8,
+            anims: {
+                'walk-down': {from: 0, to: 7, loop: true, speed: 15},
+                'walk-side': {from: 0, to: 7, loop: true, speed: 15},
+                'walk-up': {from: 0, to: 7, loop: true, speed: 15},
+                'idle-down': {from: 1, to: 0},
+                'idle-side': {from: 1, to: 0},
+                'idle-up': {from: 1, to: 0},
+            },
+        },
+    })
 }
 
 export default loadHeros

@@ -9,9 +9,11 @@ const {
     add,
     loadTiledMap,
     onCharInput,
-    drawLines,
     onClick,
-    onKeyPress
+    onKeyPress,
+    origin,
+    sprite,
+    layer
 } = k
 
 let levels = undefined
@@ -19,9 +21,9 @@ let key = undefined
 let userName = "";
 let character = "faune"
 
-function createLabel(k: KaboomCtx, message: string, width: number, height: number): GameObj {
+function createLabel(k: KaboomCtx, message: string, width: number, height: number, size: number): GameObj {
     return add([
-        k.text(message, {size: 32}),
+        k.text(message, {size}),
         k.pos(width, height),
         k.color(255, 1, 1),
         k.origin('center')])
@@ -30,21 +32,26 @@ function createLabel(k: KaboomCtx, message: string, width: number, height: numbe
 export function StartScene() {
     connect()
     userName = ""
-    const label = createLabel(k, "Enter name", k.width() * 0.5, k.height() * 0.2)
+    layers(["bg", "frames"], "frames")
+    const label = createLabel(k, "type your name...", k.width() * 0.5, k.height() * 0.2, 32)
 
-    createLabel(k, "Press enter after name input", k.width() * 0.5, k.height() * 0.8)
-    createLabel(k, "Choose character", k.width() * 0.5, k.height() * 0.4)
+    createLabel(k, "Press enter after name input", k.width() * 0.5, k.height() * 0.8, 16)
+    createLabel(k, "Choose character", k.width() * 0.5, k.height() * 0.4, 32)
 
     onCharInput((ch) => {
         userName += ch
+        userName = userName.trim()
         label.text = userName
+        if (userName.length === 0) {
+            label.text = "type your name..."
+        }
     })
 
     onKeyPress('backspace', () => {
         userName = userName.substring(0, userName.length - 1)
         label.text = userName
         if (userName.length === 0) {
-            label.text = "Enter name"
+            label.text = "type your name..."
         }
     })
 
@@ -54,27 +61,42 @@ export function StartScene() {
         key = r.key
     })
 
-    layers(["icons", "lines"], "icons")
-    add([sprite("faune_ico"), pos(k.width() * 0.2, k.height() * 0.5 ), area(), "hero", {heroName: "faune"}])
-    add([sprite("zombie_ico"), pos(k.width() * 0.2 + 64, k.height() * 0.5 ), area(), "hero", {heroName: "zombie"}])
-    add([sprite("knight_ico"), pos(k.width() * 0.2 + 128, k.height() * 0.5 ), area(), "hero", {heroName: "knight"}])
-    add([sprite("ogre_ico"), pos(k.width() * 0.2 + 175, k.height() * 0.5 ), area(), "hero", {heroName: "ogre"}])
-    add([sprite("necro_ico"), pos(k.width() * 0.2 + 235, k.height() * 0.5 ), area(), "hero", {heroName: "necro"}])
-    add([sprite("chort_ico"), pos(k.width() * 0.2 + 265, k.height() * 0.5 ), area(), "hero", {heroName: "chort"}])
-    add([sprite("wizzard_ico"), pos(k.width() * 0.2 + 300, k.height() * 0.5 ), area(), "hero", {heroName: "wizzard"}])
+    add([sprite("bg", {tiled: true, width: k.width(), height: k.height()}), pos(0, 0), layer('bg')])
+
+    const multiplier = 0.22
+    add([sprite("frame"), origin('center'), pos(k.width() * multiplier, k.height() * 0.6), area(), "hero", {heroName: "faune"}])
+    add([sprite("faune_ico"), origin('center'), pos(k.width() * multiplier, k.height() * 0.6), area()])
+
+    add([sprite("frame"), origin('center'), pos(k.width() * multiplier + 40, k.height() * 0.6), area(), "hero", {heroName: "zombie"}])
+    add([sprite("zombie_ico"), origin('center'), pos(k.width() * multiplier + 40, k.height() * 0.6), area()])
+
+    add([sprite("frame"), origin('center'), pos(k.width() * multiplier + 80, k.height() * 0.6), area(), "hero", {heroName: "knight"}])
+    add([sprite("knight_ico"), origin('center'), pos(k.width() * multiplier + 80, k.height() * 0.6), area()])
+
+    add([sprite("frame"), origin('center'), pos(k.width() * multiplier + 120, k.height() * 0.6), area(), "hero", {heroName: "ogre"}])
+    add([sprite("ogre_ico"), origin('center'), pos(k.width() * multiplier + 120, k.height() * 0.6), area()])
+
+    add([sprite("frame"), origin('center'), pos(k.width() * multiplier + 160, k.height() * 0.6), area(), "hero", {heroName: "necro"}])
+    add([sprite("necro_ico"), origin('center'), pos(k.width() * multiplier + 160, k.height() * 0.6), area()])
+
+    add([sprite("frame"), origin('center'), pos(k.width() * multiplier + 200, k.height() * 0.6), area(), "hero", {heroName: "chort"}])
+    add([sprite("chort_ico"), origin('center'), pos(k.width() * multiplier + 200, k.height() * 0.6)])
+
+    add([sprite("frame"), origin('center'), pos(k.width() * multiplier + 240, k.height() * 0.6), area(), "hero", {heroName: "wizzard"}])
+    add([sprite("wizzard_ico"), origin('center'), pos(k.width() * multiplier + 240, k.height() * 0.6), area()])
+
+    add([sprite("frame"), origin('center'), pos(k.width() * multiplier + 280, k.height() * 0.6), area(), "hero", {heroName: "swampy"}])
+    add([sprite("swampy_ico"), origin('center'), pos(k.width() * multiplier + 280, k.height() * 0.6), area()])
+
+    add([sprite("frame"), origin('center'), pos(k.width() * multiplier + 320, k.height() * 0.6), area(), "hero", {heroName: "wogol"}])
+    add([sprite("wogol_ico"), origin('center'), pos(k.width() * multiplier + 320, k.height() * 0.6), area()])
 
     k.onUpdate("hero", (h) => {
-        let color = rgb(255, 0, 0)
+        let spriteName = "frame"
         if (character === h.heroName) {
-            color = rgb(0, 255, 0)
+            spriteName = "frame_selected"
         }
-        drawLines({
-            pts: [ h.pos, vec2(h.pos.x, h.pos.y + h.height), vec2(h.pos.x + h.width, h.pos.y + h.height),
-                vec2(h.pos.x + h.width, h.pos.y), h.pos],
-            width: 4,
-            pos: vec2(100, 200),
-            color: color
-        })
+        h.use(sprite(spriteName))
     })
 
     onClick("hero", (h) => {
@@ -82,7 +104,7 @@ export function StartScene() {
     })
 
     onKeyDown("enter", () => {
-        if (userName !== "") {
+        if (userName.trim() !== "") {
             go("main", {levels: levels, key: key, userName, character})
         }
     })
