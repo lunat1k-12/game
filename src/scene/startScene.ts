@@ -106,6 +106,8 @@ export function StartScene() {
     onKeyDown("enter", () => {
         if (userName.trim() !== "") {
             go("main", {levels: levels, key: key, userName, character})
+        } else {
+            shake(10)
         }
     })
 }
