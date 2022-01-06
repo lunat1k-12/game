@@ -5,6 +5,7 @@ import {clearData, postPlayerInfo} from "../../rsocket/RsocketCLient";
 const { add, origin, sprite, solid, body, area, isKeyDown, text, get } = k
 let question = false
 let flipX = false
+let anim = "idle-up"
 
 export function spawnPlayer(config): GameObj {
     const faune = add([pos(202, 325),
@@ -44,6 +45,8 @@ export function spawnPlayer(config): GameObj {
                 pos(0, 0), 'question-player'])
             question = true
         }
+
+        playerUpdate(config, faune, anim)
     })
 
     k.onKeyPress('l', () => {
@@ -66,6 +69,7 @@ export function spawnPlayer(config): GameObj {
 
         if (left) {
             if (currentAnim !== "walk-side") {
+                anim = "walk-side"
                 faune.play("walk-side")
             }
             flipX = true
@@ -74,6 +78,7 @@ export function spawnPlayer(config): GameObj {
             playerUpdate(config, faune, "walk-side")
         } else if (right) {
             if (currentAnim !== "walk-side") {
+                anim = "walk-side"
                 faune.play("walk-side")
             }
             flipX = false
@@ -82,12 +87,14 @@ export function spawnPlayer(config): GameObj {
             playerUpdate(config, faune, "walk-side")
         } else if (up) {
             if (currentAnim !== "walk-up") {
+                anim = "walk-up"
                 faune.play("walk-up")
             }
             faune.pos.y -= speed
             playerUpdate(config, faune, "walk-up")
         } else if (down) {
             if (currentAnim !== "walk-down") {
+                anim = "walk-down"
                 faune.play("walk-down")
             }
             faune.pos.y += speed
@@ -96,9 +103,10 @@ export function spawnPlayer(config): GameObj {
             const direction = currentAnim.split('-').pop() ?? 'down'
             const newAnim = `idle-${direction}`
             if (currentAnim !== newAnim) {
-                faune.play(`idle-${direction}`)
+                anim = newAnim
+                faune.play(newAnim)
+                playerUpdate(config, faune, `idle-${direction}`)
             }
-            playerUpdate(config, faune, `idle-${direction}`)
         }
     })
 
