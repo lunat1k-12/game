@@ -2,16 +2,19 @@
   "name": "game",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
+    "start_docker": "parcel src/index.html -p 8000",
     "start": "parcel src/index.html -p 8000",
     "start_test": "parcel src/index.html public/**/* -p 8000",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "parcel build src/index.html public/**/*",
+    "build_docker": "parcel build /code/src/index.html /code/public/**/* --no-cache"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "kaboom": "^2000.1.8",
+    "parcel": "^2.2.1",
     "rsocket-core": "^0.0.27",
     "rsocket-tcp-client": "^0.0.27",
     "rsocket-websocket-client": "^0.0.27"

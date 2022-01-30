@@ -14,4 +14,4 @@ scene("start", StartScene)
 scene("main", MainScene)
 scene("logo", LogoScene)
 
-go('logo')
+go('start')
