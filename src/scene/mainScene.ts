@@ -20,31 +20,8 @@ export function MainScene(config) {
         k.addLevel(level, {width: 16, height: 16, ...config.key})
     }
 
-    const faune = spawnPlayer(config)
+    const player = spawnPlayer(config)
     drawLabels()
-
-    k.onKeyPress('space', () => {
-        if (get('pop-up').length > 0) {
-            destroyAll('pop-up')
-            return
-        }
-
-        every('slide', (slide) => {
-            if (slide.isColliding(faune)) {
-                let slideId = "";
-                for (let conf of slideMap) {
-                    if (conf.pos.x === slide.pos.x &&
-                        conf.pos.y === slide.pos.y) {
-                        slideId = conf.slideId
-                    }
-                }
-                add([sprite(slideId), origin('center'),
-                    fixed(), layer('pop-up'),
-                    scale(0.4),
-                    pos(k.width() / 2, k.height() / 2), 'pop-up'])
-            }
-        })
-    })
 }
 
 
@@ -75,7 +52,7 @@ function onLevelUpdate(payload) {
 
                 hero.flipX(pl.flipX)
             } else {
-                const player = add([sprite(pl.sprite), pos(pl.x, pl.y), origin('center'), area(), `hero-${pl.playerName}`, 'level-part'])
+                const player = add([sprite(pl.sprite), pos(pl.x, pl.y), origin('center'), area(), scale(1.2), `hero-${pl.playerName}`, 'level-part', 'player'])
                 const name = add([text(pl.playerName, {size: 8}), pos(player.pos), 'level-part', `name-${pl.playerName}`])
                 if (pl.question) {
                     add([sprite('question_mark'), area(),
