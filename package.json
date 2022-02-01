@@ -5,10 +5,8 @@
   "scripts": {
     "start_docker": "parcel src/index.html -p 8000",
     "start": "parcel src/index.html -p 8000",
-    "start_test": "parcel src/index.html public/**/* -p 8000",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build src/index.html public/**/**/*",
-    "build_docker": "parcel build /code/src/index.html /code/public/**/**/* --no-cache"
+    "build": "parcel build src/index.html public/tiles/* public/**/**/*",
+    "build_docker": "parcel build /code/src/index.html /code/public/tiles/* /code/public/**/**/* --no-cache"
   },
   "author": "",
   "license": "ISC",
