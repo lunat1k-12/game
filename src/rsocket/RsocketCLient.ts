@@ -2,8 +2,8 @@ import { RSocketClient, JsonSerializer, IdentitySerializer } from 'rsocket-core'
 import RSocketWebSocketClient from 'rsocket-websocket-client';
 
 // backend ws endpoint
-const wsURL = 'ws://tcp-game-server-load-balancer-1c7938fc2619c597.elb.eu-west-2.amazonaws.com:7000/rsocket';
-// const wsURL = 'ws://localhost:7000/rsocket';
+// const wsURL = 'ws://tcp-game-server-load-balancer-1c7938fc2619c597.elb.eu-west-2.amazonaws.com:7000/rsocket';
+const wsURL = 'ws://localhost:7000/rsocket';
 
 export let rsocket = undefined;
 

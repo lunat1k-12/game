@@ -1,6 +1,5 @@
 import k from "../kaboom";
 import {playersInfo} from "../rsocket/RsocketCLient";
-import slideMap from "./mapping/SlidesMapping";
 import spawnPlayer from "./objects/MainPlayer";
 import drawLabels from "./objects/Labels";
 
@@ -21,6 +20,12 @@ export function MainScene(config) {
     }
 
     const player = spawnPlayer(config)
+
+    add([sprite('not_empty_burrel', {anim: 'anim'}), pos(200, 200), solid(), area(), 'wall'])
+    add([sprite('empty_burrel', {anim: 'anim'}), pos(290, 200), solid(), area(), 'wall'])
+    add([sprite('desk', {anim: 'anim'}), pos(260, 270), solid(), area(), 'wall'])
+    add([sprite('terminal', {anim: 'anim'}), pos(200, 270), solid(), area(), 'wall'])
+    add([sprite('big_screen', {anim: 'anim'}), pos(280, 15), solid(), area(), 'wall'])
     drawLabels()
 }
 

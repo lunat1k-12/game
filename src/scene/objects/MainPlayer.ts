@@ -9,27 +9,27 @@ let flipX = false
 let anim = "idle-up"
 
 export function spawnPlayer(config): GameObj {
-    const faune = add([pos(202, 325),
+    const player = add([pos(100, 100),
         sprite(config.character),
         origin('center'),
         solid(),
         scale(1.2),
         body({maxVel: 0}),
-        area()]);
-    faune.play("idle-up")
+        area({shape: 'rect', width: 20, height: 35, offset: vec2(2, 0)})]);
+    player.play("idle-up")
 
-    const name = add([text(config.userName, {size: 8}), pos(faune.pos)])
-    faune.onUpdate(() => {
-        camPos(faune.pos)
-        name.pos.x = faune.pos.x - name.width / 2
-        name.pos.y = faune.pos.y - name.height - 10
+    const name = add([text(config.userName, {size: 8}), pos(player.pos)])
+    player.onUpdate(() => {
+        camPos(player.pos)
+        name.pos.x = player.pos.x - name.width / 2
+        name.pos.y = player.pos.y - name.height - 10
         every('question-player', (question) => {
-            question.pos.x = faune.pos.x - question.width / 2
-            question.pos.y = faune.pos.y - question.height - 20
+            question.pos.x = player.pos.x - question.width / 2
+            question.pos.y = player.pos.y - question.height - 20
         })
         every('level-part', (part) => {
-            if (Math.abs((faune.pos.x - 8) - part.pos.x) > k.width() / 2 + 8 ||
-                Math.abs((faune.pos.y - 8) - part.pos.y) > k.height() / 2 + 8) {
+            if (Math.abs((player.pos.x - 16) - part.pos.x) > k.width() / 2 + 16 ||
+                Math.abs((player.pos.y - 16) - part.pos.y) > k.height() / 2 + 16) {
                 part.hidden = true
             } else {
                 part.hidden = false
@@ -38,16 +38,19 @@ export function spawnPlayer(config): GameObj {
 
     })
 
-    onKeyPress('space', () => spawnPistolBullet(faune, flipX))
+    onKeyPress('space', () => {
+        spawnPistolBullet(player, flipX)
+        playerUpdate(config, player, 'shoot')
+    })
 
-    faune.action(() => {
+    player.action(() => {
         const clear = isKeyDown('c')
         const left = isKeyDown('left')
         const right = isKeyDown('right')
         const up = isKeyDown('up')
         const down = isKeyDown('down')
         const speed = 4
-        const currentAnim = faune.curAnim()
+        const currentAnim = player.curAnim()
 
         if (clear) {
             clearData()
@@ -57,47 +60,47 @@ export function spawnPlayer(config): GameObj {
         if (left) {
             if (currentAnim !== "walk-side") {
                 anim = "walk-side"
-                faune.play("walk-side")
+                player.play("walk-side")
             }
             flipX = true
-            faune.flipX(true)
-            faune.pos.x -= speed
-            playerUpdate(config, faune, "walk-side")
+            player.flipX(true)
+            player.pos.x -= speed
+            playerUpdate(config, player, "walk-side")
         } else if (right) {
             if (currentAnim !== "walk-side") {
                 anim = "walk-side"
-                faune.play("walk-side")
+                player.play("walk-side")
             }
             flipX = false
-            faune.flipX(false)
-            faune.pos.x += speed
-            playerUpdate(config, faune, "walk-side")
+            player.flipX(false)
+            player.pos.x += speed
+            playerUpdate(config, player, "walk-side")
         } else if (up) {
             if (currentAnim !== "walk-up") {
                 anim = "walk-up"
-                faune.play("walk-up")
+                player.play("walk-up")
             }
-            faune.pos.y -= speed
-            playerUpdate(config, faune, "walk-up")
+            player.pos.y -= speed
+            playerUpdate(config, player, "walk-up")
         } else if (down) {
             if (currentAnim !== "walk-down") {
                 anim = "walk-down"
-                faune.play("walk-down")
+                player.play("walk-down")
             }
-            faune.pos.y += speed
-            playerUpdate(config, faune, "walk-down")
+            player.pos.y += speed
+            playerUpdate(config, player, "walk-down")
         } else if (currentAnim !== undefined){
             const direction = currentAnim.split('-').pop() ?? 'down'
             const newAnim = `idle-${direction}`
             if (currentAnim !== newAnim && currentAnim !== 'shoot') {
                 anim = newAnim
-                faune.play(newAnim)
-                playerUpdate(config, faune, `idle-${direction}`)
+                player.play(newAnim)
+                playerUpdate(config, player, `idle-${direction}`)
             }
         }
     })
 
-    return faune
+    return player
 }
 
 function playerUpdate(config, player, currentAnim) {
