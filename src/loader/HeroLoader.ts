@@ -23,18 +23,6 @@ export function loadHeroes() {
         },
     })
 
-    loadSpriteAtlas("/public/assets/projectiles/pistol-bullet.png", {
-        'pistol_bullet': {
-            x: 0,
-            y: 0,
-            width: 128,
-            height: 32,
-            sliceX: 4,
-            anims: {
-                'fly': {from: 0, to: 3, loop: true, speed: 8}
-            },
-        },
-    })
 }
 
 export default loadHeroes

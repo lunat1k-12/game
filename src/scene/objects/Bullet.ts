@@ -20,7 +20,7 @@ export function spawnPistolBullet(player, flipX) {
     const bullet = add([sprite('pistol_bullet', {anim: 'fly'}),
         pos(posX, posY),
         move(direction,300),
-        area(),
+        area({shape: 'line', width: 8, height: 4, offset: vec2(12, 10)}),
         'pistol_bullet'])
 
     bullet.onCollide('wall', (wall) => {
