@@ -3,7 +3,6 @@ import RSocketWebSocketClient from 'rsocket-websocket-client';
 
 // backend ws endpoint
 const wsURL = 'ws://tcp-game-server-load-balancer-1c7938fc2619c597.elb.eu-west-2.amazonaws.com:7000/rsocket';
-// const wsURL = 'ws://ec2-3-9-18-121.eu-west-2.compute.amazonaws.com:7000/rsocket';
 // const wsURL = 'ws://localhost:7000/rsocket';
 
 export let rsocket = undefined;
@@ -27,24 +26,6 @@ const client = new RSocketClient({
 
 // error handler
 const errorHanlder = (e) => console.log(e);
-// response handler
-const responseHanlder = (payload) => {
-    console.log(payload)
-}
-
-// request to rsocket-websocket and response handling
-const numberRequester = (socket) => {
-    socket.requestStream({
-        data: undefined,
-        metadata: String.fromCharCode('players-movement'.length) + 'players-movement'
-    }).subscribe({
-        onError: errorHanlder,
-        onNext: responseHanlder,
-        onSubscribe: subscription => {
-            subscription.request(2147483647); // set it to some max value
-        }
-    })
-}
 
 export const playersInfo = (onResponse, requestSize) => {
     rsocket.requestStream({
