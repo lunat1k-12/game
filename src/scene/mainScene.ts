@@ -3,7 +3,7 @@ import {playersInfo} from "../rsocket/RsocketCLient";
 import spawnPlayer from "./objects/MainPlayer";
 import drawLabels from "./objects/Labels";
 
-const {add, origin, sprite, area, text, get} = k
+const {add, origin, sprite, area, text, get, onKeyPress, wait, follow} = k
 let userName = undefined
 const REQUEST_SIZE = 50
 let counter = 0
@@ -27,6 +27,107 @@ export function MainScene(config) {
     add([sprite('terminal', {anim: 'anim'}), pos(200, 270), solid(), area(), 'wall'])
     add([sprite('big_screen', {anim: 'anim'}), pos(280, 15), solid(), area(), 'wall'])
     drawLabels()
+
+    add([
+        pos(80, 100),
+        sprite("walk_drone", {anim: "idle-diactivated"}),
+        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
+        'enemy-walk-drone'
+    ])
+
+    add([
+        pos(80, 140),
+        sprite("walk_drone", {anim: "idle-diactivated"}),
+        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
+        'enemy-walk-drone'
+    ])
+
+    add([
+        pos(80, 180),
+        sprite("walk_drone", {anim: "idle-diactivated"}),
+        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
+        'enemy-walk-drone'
+    ])
+
+
+    add([
+        pos(80, 220),
+        sprite("walk_drone", {anim: "idle-diactivated"}),
+        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
+        'enemy-walk-drone'
+    ])
+
+    add([
+        pos(150, 100),
+        sprite("walk_drone", {anim: "idle-diactivated"}),
+        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
+        'enemy-walk-drone'
+    ])
+
+    add([
+        pos(150, 140),
+        sprite("walk_drone", {anim: "idle-diactivated"}),
+        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
+        'enemy-walk-drone'
+    ])
+
+    add([
+        pos(150, 180),
+        sprite("walk_drone", {anim: "idle-diactivated"}),
+        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
+        'enemy-walk-drone'
+    ])
+
+
+    add([
+        pos(150, 220),
+        sprite("walk_drone", {anim: "idle-diactivated"}),
+        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
+        'enemy-walk-drone'
+    ])
+
+    every('enemy-walk-drone', (enemy) => {
+        enemy.onStateEnter("idle-diactive", () => {
+            wait(0.5, () => {
+                enemy.play("idle-diactivated")
+            })
+        })
+
+        enemy.onStateEnter("activate", () => {
+            enemy.play("activate", {
+                onEnd: () => enemy.enterState("idle")
+            })
+        })
+
+        enemy.onStateEnter("diactivate", () => {
+            enemy.play("diactivate", {
+                onEnd: () => enemy.enterState("idle-diactive")
+            })
+        })
+
+        enemy.onStateEnter("move", () => {
+            enemy.play("walk")
+        })
+
+        enemy.onStateEnter("idle", () => {
+            wait(0.5, () => {
+                enemy.play("idle")
+            })
+        })
+    })
+
+
+    onKeyPress('a', () => {
+        every('enemy-walk-drone', (enemy) => {
+            enemy.enterState('activate')
+        })
+    })
+
+    onKeyPress('d', () => {
+        every('enemy-walk-drone', (enemy) => {
+            enemy.enterState('diactivate')
+        })
+    })
 }
 
 
