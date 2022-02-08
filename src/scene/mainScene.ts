@@ -2,8 +2,12 @@ import k from "../kaboom";
 import {playersInfo} from "../rsocket/RsocketCLient";
 import spawnPlayer from "./objects/MainPlayer";
 import drawLabels from "./objects/Labels";
+import {initWalkDrones} from "./objects/Enemies";
+import {MAIN_LEVEL_FLOOR_MAP, MAIN_LEVEL_FOOR_MAPPING,
+    MAIN_LEVEL_WALL_MAP, MAIN_LEVEL_WALL_MAPPING,
+    MAIN_LEVEL_SPECIAL_ITEMS_MAP, MAIN_LEVEL_SPECIAL_ITEMS_MAPPING} from "../tiles/MainLevel";
 
-const {add, origin, sprite, area, text, get, onKeyPress, wait, follow} = k
+const {add, origin, sprite, area, text, get, onKeyPress, pos, addLevel} = k
 let userName = undefined
 const REQUEST_SIZE = 50
 let counter = 0
@@ -15,107 +19,14 @@ export function MainScene(config) {
     playersUpdate()
 
     layers(['level', 'pop-up', 'message'], 'level')
-    for (let level of config.levels) {
-        k.addLevel(level, {width: 16, height: 16, ...config.key})
-    }
 
-    const player = spawnPlayer(config)
+    addLevel(MAIN_LEVEL_FLOOR_MAP, MAIN_LEVEL_FOOR_MAPPING)
+    addLevel(MAIN_LEVEL_WALL_MAP, MAIN_LEVEL_WALL_MAPPING)
+    addLevel(MAIN_LEVEL_SPECIAL_ITEMS_MAP, MAIN_LEVEL_SPECIAL_ITEMS_MAPPING)
 
-    add([sprite('not_empty_burrel', {anim: 'anim'}), pos(200, 200), solid(), area(), 'wall'])
-    add([sprite('empty_burrel', {anim: 'anim'}), pos(290, 200), solid(), area(), 'wall'])
-    add([sprite('desk', {anim: 'anim'}), pos(260, 270), solid(), area(), 'wall'])
-    add([sprite('terminal', {anim: 'anim'}), pos(200, 270), solid(), area(), 'wall'])
-    add([sprite('big_screen', {anim: 'anim'}), pos(280, 15), solid(), area(), 'wall'])
+    spawnPlayer(config)
     drawLabels()
-
-    add([
-        pos(80, 100),
-        sprite("walk_drone", {anim: "idle-diactivated"}),
-        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
-        'enemy-walk-drone'
-    ])
-
-    add([
-        pos(80, 140),
-        sprite("walk_drone", {anim: "idle-diactivated"}),
-        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
-        'enemy-walk-drone'
-    ])
-
-    add([
-        pos(80, 180),
-        sprite("walk_drone", {anim: "idle-diactivated"}),
-        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
-        'enemy-walk-drone'
-    ])
-
-
-    add([
-        pos(80, 220),
-        sprite("walk_drone", {anim: "idle-diactivated"}),
-        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
-        'enemy-walk-drone'
-    ])
-
-    add([
-        pos(150, 100),
-        sprite("walk_drone", {anim: "idle-diactivated"}),
-        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
-        'enemy-walk-drone'
-    ])
-
-    add([
-        pos(150, 140),
-        sprite("walk_drone", {anim: "idle-diactivated"}),
-        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
-        'enemy-walk-drone'
-    ])
-
-    add([
-        pos(150, 180),
-        sprite("walk_drone", {anim: "idle-diactivated"}),
-        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
-        'enemy-walk-drone'
-    ])
-
-
-    add([
-        pos(150, 220),
-        sprite("walk_drone", {anim: "idle-diactivated"}),
-        state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
-        'enemy-walk-drone'
-    ])
-
-    every('enemy-walk-drone', (enemy) => {
-        enemy.onStateEnter("idle-diactive", () => {
-            wait(0.5, () => {
-                enemy.play("idle-diactivated")
-            })
-        })
-
-        enemy.onStateEnter("activate", () => {
-            enemy.play("activate", {
-                onEnd: () => enemy.enterState("idle")
-            })
-        })
-
-        enemy.onStateEnter("diactivate", () => {
-            enemy.play("diactivate", {
-                onEnd: () => enemy.enterState("idle-diactive")
-            })
-        })
-
-        enemy.onStateEnter("move", () => {
-            enemy.play("walk")
-        })
-
-        enemy.onStateEnter("idle", () => {
-            wait(0.5, () => {
-                enemy.play("idle")
-            })
-        })
-    })
-
+    initWalkDrones()
 
     onKeyPress('a', () => {
         every('enemy-walk-drone', (enemy) => {

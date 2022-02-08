@@ -3,12 +3,13 @@ import {GameObj} from "kaboom";
 import {clearData, postPlayerInfo} from "../../rsocket/RsocketCLient";
 import {spawnPistolBullet} from "./Bullet";
 
-const { add, origin, sprite, solid, body, area, isKeyDown, text, get, onKeyPress } = k
+const { add, origin, sprite, solid, body, area, isKeyDown, text, follow, onKeyPress } = k
 let question = false
 let flipX = false
 let anim = "idle-up"
 
 export function spawnPlayer(config): GameObj {
+    const letter_length = 4.8
     const player = add([pos(100, 100),
         sprite(config.character),
         origin('center'),
@@ -18,11 +19,10 @@ export function spawnPlayer(config): GameObj {
         area({shape: 'rect', width: 20, height: 35, offset: vec2(2, 0)})]);
     player.play("idle-up")
 
-    const name = add([text(config.userName, {size: 8}), pos(player.pos)])
+    add([text(config.userName, {size: 8}),
+        follow(player, vec2(-((config.userName.length * letter_length) / 2), -12)), pos(player.pos)])
     player.onUpdate(() => {
         camPos(player.pos)
-        name.pos.x = player.pos.x - name.width / 2
-        name.pos.y = player.pos.y - name.height - 10
         every('question-player', (question) => {
             question.pos.x = player.pos.x - question.width / 2
             question.pos.y = player.pos.y - question.height - 20
@@ -49,7 +49,7 @@ export function spawnPlayer(config): GameObj {
         const right = isKeyDown('right')
         const up = isKeyDown('up')
         const down = isKeyDown('down')
-        const speed = 4
+        const speed = 3
         const currentAnim = player.curAnim()
 
         if (clear) {
