@@ -12,9 +12,9 @@ export function loadHeroes() {
             height: 32,
             sliceX: 22,
             anims: {
-                'walk-down': {from: 8, to: 11, loop: true, speed: 12},
-                'walk-side': {from: 8, to: 11, loop: true, speed: 12},
-                'walk-up': {from: 8, to: 11, loop: true, speed: 12},
+                'walk-down': {from: 8, to: 11, loop: true, speed: 5},
+                'walk-side': {from: 8, to: 11, loop: true, speed: 5},
+                'walk-up': {from: 8, to: 11, loop: true, speed: 5},
                 'idle-down': {from: 0, to: 0},
                 'idle-side': {from: 0, to: 0},
                 'idle-up': {from: 0, to: 0},
