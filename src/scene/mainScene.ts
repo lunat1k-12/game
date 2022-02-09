@@ -2,10 +2,12 @@ import k from "../kaboom";
 import {playersInfo} from "../rsocket/RsocketCLient";
 import spawnPlayer from "./objects/MainPlayer";
 import drawLabels from "./objects/Labels";
-import {initWalkDrones} from "./objects/Enemies";
+import {initWalkDrones, spawnWalkDrone} from "./objects/Enemies";
+import {findPath, moveDroneToPlayer} from "./pathfinder/AStar";
 import {MAIN_LEVEL_FLOOR_MAP, MAIN_LEVEL_FOOR_MAPPING,
     MAIN_LEVEL_WALL_MAP, MAIN_LEVEL_WALL_MAPPING,
     MAIN_LEVEL_SPECIAL_ITEMS_MAP, MAIN_LEVEL_SPECIAL_ITEMS_MAPPING} from "../tiles/MainLevel";
+import {GameObj, PosComp} from "kaboom";
 
 const {add, origin, sprite, area, text, get, onKeyPress, pos, addLevel} = k
 let userName = undefined
@@ -24,7 +26,7 @@ export function MainScene(config) {
     addLevel(MAIN_LEVEL_WALL_MAP, MAIN_LEVEL_WALL_MAPPING)
     addLevel(MAIN_LEVEL_SPECIAL_ITEMS_MAP, MAIN_LEVEL_SPECIAL_ITEMS_MAPPING)
 
-    spawnPlayer(config)
+    const player: GameObj<PosComp> = spawnPlayer(config)
     drawLabels()
     initWalkDrones()
 
@@ -39,8 +41,17 @@ export function MainScene(config) {
             enemy.enterState('diactivate')
         })
     })
-}
 
+    onKeyPress('m', () => {
+
+        every('enemy-walk-drone', (walkDrone) => {
+            findPath(player.pos, walkDrone.pos, (points) => {
+                moveDroneToPlayer(points, walkDrone)
+            })
+        })
+
+    })
+}
 
 function playersUpdate() {
     playersInfo(onLevelUpdate, REQUEST_SIZE)

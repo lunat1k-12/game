@@ -1,5 +1,5 @@
 import k from "../../kaboom";
-import {GameObj} from "kaboom";
+import {GameObj, PosComp} from "kaboom";
 import {clearData, postPlayerInfo} from "../../rsocket/RsocketCLient";
 import {spawnPistolBullet} from "./Bullet";
 
@@ -8,7 +8,7 @@ let question = false
 let flipX = false
 let anim = "idle-up"
 
-export function spawnPlayer(config): GameObj {
+export function spawnPlayer(config): GameObj<PosComp> {
     const letter_length = 4.8
     const player = add([pos(100, 100),
         sprite(config.character),
