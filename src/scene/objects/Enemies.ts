@@ -37,6 +37,10 @@ export function spawnWalkDrone(pos: PosComp, name: string, initState: string, in
         enemy.play("walk")
     })
 
+    enemy.onStateEnter("attack", () => {
+        enemy.play("shoot")
+    })
+
     enemy.onStateEnter("idle", () => {
         wait(0.5, () => {
             enemy.play("idle")
@@ -86,8 +90,14 @@ function onWalkDroneUpdate(payload) {
             if (wl.state !== drone.state) {
                 drone.enterState(wl.state)
             }
+
+            if (Math.floor(drone.pos.x / TILE_SIZE) !== wl.row ||
+                Math.floor(drone.pos.y / TILE_SIZE) !== wl.col) {
+                drone.pos.x = wl.col * TILE_SIZE
+                drone.pos.y = wl.row * TILE_SIZE
+            }
         } else {
-            spawnWalkDrone(pos(wl.row * TILE_SIZE, wl.col * TILE_SIZE), wl.droneName, wl.state, wl.anim)
+            spawnWalkDrone(pos(wl.col * TILE_SIZE, wl.row * TILE_SIZE), wl.droneName, wl.state, wl.anim)
         }
     }
     rsocketCounter++
