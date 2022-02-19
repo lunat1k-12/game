@@ -11,7 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "easystarjs": "^0.4.4",
     "kaboom": "^2000.1.8",
     "parcel": "^2.2.1",
     "rsocket-core": "^0.0.27",

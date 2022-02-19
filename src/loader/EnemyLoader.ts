@@ -12,7 +12,7 @@ export function loadEnemies() {
             height: 32,
             sliceX: 32,
             anims: {
-                'walk': {from: 15, to: 18, loop: true, speed: 5},
+                'walk': {from: 15, to: 18, loop: true, speed: 10},
                 'idle': {from: 3, to: 10, loop: true, speed: 5},
                 'shoot': {from: 19, to: 23, speed: 5},
                 'idle-diactivated': {from: 0, to: 2, loop: true, speed: 5},

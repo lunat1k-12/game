@@ -1,6 +1,6 @@
 import k from "../kaboom";
 
-const {add, origin, sprite, area, text, get, onKeyPress, wait, pos, solid} = k
+const {add, origin, sprite, area, text, get, onKeyPress, wait, pos, solid, body} = k
 
 export const MAIN_LEVEL_WALL_MAP = [
     "{==================}",
@@ -35,7 +35,10 @@ export const MAIN_LEVEL_WALL_MAPPING = {
     "w": () => [
         sprite("walk_drone", {anim: "idle-diactivated"}),
         state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
-        'enemy-walk-drone'
+        'enemy-walk-drone',
+        area(),
+        solid(),
+        body({maxVel: 0})
     ]
 }
 
