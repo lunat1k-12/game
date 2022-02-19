@@ -1,9 +1,9 @@
 import k from "../../kaboom";
-import {GameObj, PosComp} from "kaboom";
+import {GameObj, PosComp, Rect} from "kaboom";
 import {clearData, postPlayerInfo} from "../../rsocket/RsocketCLient";
 import {spawnPistolBullet} from "./Bullet";
 
-const { add, origin, sprite, solid, body, area, isKeyDown, text, follow, onKeyPress } = k
+const { add, origin, sprite, solid, body, area, isKeyDown, text, follow, onKeyPress, testRectRect } = k
 let question = false
 let flipX = false
 let anim = "idle-up"
@@ -16,17 +16,16 @@ export function spawnPlayer(config): GameObj<PosComp> {
         solid(),
         scale(1.2),
         body({maxVel: 0}),
-        area({shape: 'rect', width: 20, height: 35, offset: vec2(2, 0)})]);
+        area({shape: 'rect', width: 20, height: 35, offset: vec2(2, 0)}),
+        {collideWithDesk: false},
+        'player']);
     player.play("idle-up")
 
     add([text(config.userName, {size: 8}),
         follow(player, vec2(-((config.userName.length * letter_length) / 2), -12)), pos(player.pos)])
     player.onUpdate(() => {
         camPos(player.pos)
-        every('question-player', (question) => {
-            question.pos.x = player.pos.x - question.width / 2
-            question.pos.y = player.pos.y - question.height - 20
-        })
+
         every('level-part', (part) => {
             if (Math.abs((player.pos.x - 16) - part.pos.x) > k.width() / 2 + 16 ||
                 Math.abs((player.pos.y - 16) - part.pos.y) > k.height() / 2 + 16) {
@@ -36,7 +35,18 @@ export function spawnPlayer(config): GameObj<PosComp> {
             }
         })
 
+        let collideWithDesk = false;
+        every('desk', (desk) => {
+            if (testRectRect(
+                {p1: vec2(player.pos.x, player.pos.y), p2: vec2(player.pos.x + 20, player.pos.y + 20)},
+                {p1: vec2(desk.pos.x, desk.pos.y), p2: vec2(desk.pos.x + 32, desk.pos.y + 32)}
+            )) {
+                collideWithDesk = true
+            }
+        })
+        player.collideWithDesk = collideWithDesk
     })
+
 
     onKeyPress('space', () => {
         spawnPistolBullet(player, flipX)
