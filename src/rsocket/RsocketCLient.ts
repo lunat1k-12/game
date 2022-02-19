@@ -2,8 +2,8 @@ import { RSocketClient, JsonSerializer, IdentitySerializer } from 'rsocket-core'
 import RSocketWebSocketClient from 'rsocket-websocket-client';
 
 // backend ws endpoint
-const wsURL = 'ws://tcp-game-server-load-balancer-1c7938fc2619c597.elb.eu-west-2.amazonaws.com:7000/rsocket';
-// const wsURL = 'ws://localhost:7000/rsocket';
+// const wsURL = 'ws://tcp-game-server-load-balancer-1c7938fc2619c597.elb.eu-west-2.amazonaws.com:7000/rsocket';
+const wsURL = 'ws://localhost:7000/rsocket';
 
 export let rsocket = undefined;
 
@@ -40,6 +40,19 @@ export const playersInfo = (onResponse, requestSize) => {
     })
 }
 
+export const walkDroneInfo = (onResponse, requestSize) => {
+    rsocket.requestStream({
+        data: undefined,
+        metadata: String.fromCharCode('walk-drones-movement'.length) + 'walk-drones-movement'
+    }).subscribe({
+        onError: errorHanlder,
+        onNext: onResponse,
+        onSubscribe: subscription => {
+            subscription.request(requestSize); // set it to some max value
+        }
+    })
+}
+
 export const postPlayerInfo = (player) => {
     rsocket.fireAndForget({
         data: player,
@@ -47,6 +60,11 @@ export const postPlayerInfo = (player) => {
     })
 }
 
+export const postDroneActivate = () => {
+    rsocket.fireAndForget({
+        metadata: String.fromCharCode('walk-drones-activate'.length) + 'walk-drones-activate'
+    })
+}
 export const clearData = () => {
     rsocket.fireAndForget({
         data: null,

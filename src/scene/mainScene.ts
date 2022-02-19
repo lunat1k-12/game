@@ -1,17 +1,16 @@
 import k from "../kaboom";
-import {playersInfo} from "../rsocket/RsocketCLient";
+import {playersInfo, postDroneActivate} from "../rsocket/RsocketCLient";
 import spawnPlayer from "./objects/MainPlayer";
 import drawLabels from "./objects/Labels";
-import {initWalkDrones, spawnWalkDrone} from "./objects/Enemies";
-import {findPath, moveDroneToPlayer} from "./pathfinder/AStar";
+import {initWalkDrones, spawnWalkDrone, walkDroneUpdate} from "./objects/Enemies";
 import {MAIN_LEVEL_FLOOR_MAP, MAIN_LEVEL_FOOR_MAPPING,
     MAIN_LEVEL_WALL_MAP, MAIN_LEVEL_WALL_MAPPING,
     MAIN_LEVEL_SPECIAL_ITEMS_MAP, MAIN_LEVEL_SPECIAL_ITEMS_MAPPING} from "../tiles/MainLevel";
 import {GameObj, PosComp} from "kaboom";
+import {RSOCKET_REQUEST_SIZE} from "./util/Constants";
 
 const {add, origin, sprite, area, text, get, onKeyPress, pos, addLevel} = k
 let userName = undefined
-const REQUEST_SIZE = 50
 let counter = 0
 let privData = []
 
@@ -19,6 +18,7 @@ export function MainScene(config) {
 
     userName = config.userName
     playersUpdate()
+    walkDroneUpdate()
 
     layers(['level', 'pop-up', 'message'], 'level')
 
@@ -28,12 +28,14 @@ export function MainScene(config) {
 
     const player: GameObj<PosComp> = spawnPlayer(config)
     drawLabels()
-    initWalkDrones()
+    // initWalkDrones()
+
 
     onKeyPress('a', () => {
-        every('enemy-walk-drone', (enemy) => {
-            enemy.enterState('activate')
-        })
+        // @ts-ignore
+        if (player.collideWithDesk) {
+            postDroneActivate()
+        }
     })
 
     onKeyPress('d', () => {
@@ -41,20 +43,10 @@ export function MainScene(config) {
             enemy.enterState('diactivate')
         })
     })
-
-    onKeyPress('m', () => {
-
-        every('enemy-walk-drone', (walkDrone) => {
-            findPath(player.pos, walkDrone.pos, (points) => {
-                moveDroneToPlayer(points, walkDrone)
-            })
-        })
-
-    })
 }
 
 function playersUpdate() {
-    playersInfo(onLevelUpdate, REQUEST_SIZE)
+    playersInfo(onLevelUpdate, RSOCKET_REQUEST_SIZE)
 }
 
 function onLevelUpdate(payload) {
@@ -103,7 +95,7 @@ function onLevelUpdate(payload) {
     }
 
     counter++
-    if (counter === REQUEST_SIZE) {
+    if (counter === RSOCKET_REQUEST_SIZE) {
         counter = 0
         playersUpdate()
     }

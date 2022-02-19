@@ -1,19 +1,19 @@
 import k from "../kaboom";
 
-const {add, origin, sprite, area, text, get, onKeyPress, wait, pos, solid} = k
+const {add, origin, sprite, area, text, get, onKeyPress, wait, pos, solid, body} = k
 
 export const MAIN_LEVEL_WALL_MAP = [
     "{==================}",
-    "|        w         /",
-    "|   w           w  /",
-    "|                  /",
-    "|      w           /",
-    "|           w      /",
-    "|                  /",
-    "| w       d        /",
     "|                  /",
     "|                  /",
-    "|  nb         t  w /",
+    "|                  /",
+    "|                  /",
+    "|                  /",
+    "|                  /",
+    "|         d        /",
+    "|                  /",
+    "|                  /",
+    "|  nb         t    /",
     "|                  /",
     "[==================]",
 ]
@@ -28,14 +28,17 @@ export const MAIN_LEVEL_WALL_MAPPING = {
     "]": () => [sprite("bottom_right_wall"), solid(), area(), 'level-part', 'wall'],
     "/": () => [sprite("right_wall"), solid(), area({shape: 'line', width: 8, height: 32, offset: vec2(26, 0)}), 'level-part', 'wall'],
     "=": () => [sprite("top_bottom_wall"), solid(), area(), 'level-part', 'wall'],
-    "d": () => [sprite("desk", {anim: 'anim'}), solid(), area(), 'level-part', 'wall'],
+    "d": () => [sprite("desk", {anim: 'anim'}), solid(), area(), 'level-part', 'wall', 'desk'],
     "t": () => [sprite("terminal", {anim: 'anim'}), solid(), area(), 'level-part', 'wall'],
     "n": () => [sprite("not_empty_burrel", {anim: 'anim'}), solid(), area(), 'level-part', 'wall'],
     "b": () => [sprite("empty_burrel", {anim: 'anim'}), solid(), area(), 'level-part', 'wall'],
     "w": () => [
         sprite("walk_drone", {anim: "idle-diactivated"}),
         state("idle-diactive", ["idle-diactive", "idle", "attack", "move", "activate", "diactivate"]),
-        'enemy-walk-drone'
+        'enemy-walk-drone',
+        area(),
+        solid(),
+        body({maxVel: 0})
     ]
 }
 
